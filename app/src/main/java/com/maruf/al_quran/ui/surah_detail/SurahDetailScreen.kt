@@ -26,6 +26,8 @@ fun SurahDetailScreen(
     vm: SurahDetailViewModel = hiltViewModel()
 ) {
     val state = vm.state.value
+    val currentPlayingAyah = vm.currentPlayingAyah.value
+
 
     Scaffold(
         topBar = {
@@ -43,7 +45,13 @@ fun SurahDetailScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(state.surahDetail) { ayah ->
-                    AyahItem(ayah = ayah)
+                    AyahItem(
+                        ayah = ayah,
+                        isPlaying = currentPlayingAyah == ayah.number,
+                        onPlayClick = {
+                            vm.onPlayAudio(ayah)
+                        }
+                    )
                 }
             }
 

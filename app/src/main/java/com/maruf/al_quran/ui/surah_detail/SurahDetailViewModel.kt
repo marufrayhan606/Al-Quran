@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.maruf.al_quran.common.Resource
 import com.maruf.al_quran.domain.model.Ayah
 import com.maruf.al_quran.domain.usecase.GetSurahDetailUseCase
+import com.maruf.al_quran.ui.util.AudioPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,10 +23,15 @@ data class SurahDetailState(
 @HiltViewModel
 class SurahDetailViewModel @Inject constructor(
     private val getSurahDetailUseCase: GetSurahDetailUseCase,
+    private val audioPlayer: AudioPlayer,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
     private val _state = mutableStateOf(SurahDetailState())
     val state: State<SurahDetailState> = _state
+
+    private val _currentPlayingAyah = mutableStateOf<Int?>(null)
+    val currentPlayingAyah: State<Int?> = _currentPlayingAyah
+
 
     init {
         savedStateHandle.get<Int>("surahNumber")?.let { surahNumber ->
@@ -47,6 +53,17 @@ class SurahDetailViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun onPlayAudio(ayah: Ayah) {
+        _currentPlayingAyah.value = ayah.number
+        audioPlayer.playAudio(ayah.audio)
+
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        audioPlayer.releaseAudio()
     }
 
 }

@@ -3,7 +3,7 @@ package com.maruf.al_quran.data.remote.dto
 import com.maruf.al_quran.ui.navigation.Screen
 
 data class AyahDTO(
-//    val audio: String,
+    val audio: String? = null,
 //    val audioSecondary: List<String>,
 //    val hizbQuarter: Int,
 //    val juz: Int,
