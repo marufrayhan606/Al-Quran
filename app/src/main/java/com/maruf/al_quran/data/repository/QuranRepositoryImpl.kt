@@ -57,7 +57,8 @@ class QuranRepositoryImpl @Inject constructor(
                         Ayah(
                             number = arabicList[i].number,
                             text = arabicList[i].text,
-                            translation = translationList[i].text
+                            translation = translationList[i].text,
+                            audio = arabicList[i].audio ?: ""
                         )
                     )
                 }
